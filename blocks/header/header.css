@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  margin: 0 auto 0;
+  padding-top: 45px;
+  max-width: 880px;
+  min-width: 320px;
+  min-height: 74px;
+  border-bottom: 1px solid rgba(84, 84, 84, .7);;
+
+}
+
+/*
+Формула:
+Минимальная ширина + (Максимальная ширина - Минимальная ширина) * ((Ширина окна браузера - Минимальная ширина окна браузера) / (Максимальная ширина окна браузера - Минимальная ширина окна браузера)));
+*/
+
+@media screen and (max-width: 1024px) {
+  .header {
+    width: calc(320px + (880 - 320) * ((100vw - 320px) / (1024 - 320)));
+    padding-top: calc(28px + (45 - 28) * ((100vw - 320px) / (1024 - 320)));
+    min-height: calc(56px + (74 - 56) * ((100vw - 320px) / (1024 - 320)));
+  }
+}
