@@ -4,9 +4,9 @@
   border-radius: 50%;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 880px) {
   .profile__avatar {
-    width: calc(282px + (880 - 282) * ((100vw - 320px) / (1024 - 320)));
+    width: calc(282px + (880 - 282) * ((100vw - 320px) / (880 - 320)));
     margin-bottom: 23px;
     margin-right: 0;
   }

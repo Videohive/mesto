@@ -1,8 +1,9 @@
-.transition {
+.transition__link {
   transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
 }
 
-.transition:hover {
+.transition__link:hover {
   opacity: 0.5;
+  cursor: pointer;
 }

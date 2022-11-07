@@ -5,9 +5,9 @@
   row-gap: 8px;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 880px) {
   .profile__info {
-    margin-left: calc(46px + (0 - 46) * ((100vw - 320px) / (1024 - 320)));
+    margin-left: calc(46px + (0 - 46) * ((100vw - 320px) / (880 - 320)));
     text-align: center;
     column-gap: 10px;
     row-gap: 6px;

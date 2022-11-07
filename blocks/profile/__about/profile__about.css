@@ -5,9 +5,9 @@
   line-height: 22px;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 880px) {
   .profile__about {
-    font-size: calc(14px + (18 - 14) * ((100vw - 320px) / (1024 - 320)));
-    line-height: calc(17px + (22 - 17) * ((100vw - 320px) / (1024 - 320)));
+    font-size: calc(14px + (18 - 14) * ((100vw - 320px) / (880 - 320)));
+    line-height: calc(17px + (22 - 17) * ((100vw - 320px) / (880 - 320)));
   }
 }

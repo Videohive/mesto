@@ -10,7 +10,12 @@
 
 @media screen and (max-width: 1024px) {
   .header__logo {
-    width: calc(104px + (142 - 104) * ((100vw - 320px) / (1024 - 320)));
-    margin-left: calc(27px + (0 - 27) * ((100vw - 320px) / (1024 - 320)));
+    width: calc(104px + (142 - 104) * ((100vw - 320px) / (1024- 320)));
+  }
+}
+
+@media screen and (max-width: 880px) {
+  .header__logo {
+    margin-left: 27px
   }
 }
