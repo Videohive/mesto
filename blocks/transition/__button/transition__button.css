@@ -1,0 +1,9 @@
+.transition__button {
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+
+.transition__button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
