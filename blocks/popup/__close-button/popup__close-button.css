@@ -11,6 +11,13 @@
   right: -40px;
   top: -40px;
   width: 32px;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+
+.popup__close-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 500px){
