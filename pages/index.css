@@ -5,9 +5,7 @@
 @import url(../blocks/body/body.css);
 
 @import url(../blocks/page/page.css);
-@import url(../blocks/transition/__link/transition__link.css);
-@import url(../blocks/transition/__image/transition__image.css);
-@import url(../blocks/transition/__button/transition__button.css);
+@import url(../blocks/transition/transition.css);
 
 @import url(../blocks/content/content.css);
 
