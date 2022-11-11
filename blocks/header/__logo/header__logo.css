@@ -10,7 +10,7 @@
 
 @media screen and (max-width: 1024px) {
   .header__logo {
-    width: calc(104px + (142 - 104) * ((100vw - 320px) / (1024- 320)));
+    width: calc(104px + (142 - 104) * ((100vw - 320px) / (1024 - 320)));
   }
 }
 
