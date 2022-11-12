@@ -6,7 +6,7 @@ let profileAbout = content.querySelector('.profile__about');
 
 let popup = document.querySelector('#popup');
 
-let popupForm = document.querySelector('.popup__form-name'); // popup редактирования профиля
+let popupForm = document.querySelector('.popup__form'); // popup редактирования профиля
 let popupName = document.getElementById('name-input'); // popup input имени
 let popupAbout = document.getElementById('about-input'); // popup input о себе
 
@@ -22,7 +22,6 @@ function openPopup(){
 
 function closePopup(){
 	popup.classList.remove('popup_opened');
-  console.log(editProfileSaveButton.innerHTML);
 }
 
 function saveProfile(evt){
