@@ -27,9 +27,8 @@ const initialCards = [{
 const cardTemplate = document.querySelector('#template-card').content; // шаблон карточки
 const cardElements = document.querySelector('.elements');
 
-initialCards.forEach(function (card) { // добавление карточек
-  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
-
+initialCards.forEach(function (card) { // добавление стартовых карточек
+  let cardElement = cardTemplate.querySelector('.element').cloneNode(true);
   cardElement.querySelector('.element__image').src = card.link;
   cardElement.querySelector('.element__image').alt = card.name;
   cardElement.querySelector('.element__title').textContent = card.name;
@@ -57,11 +56,22 @@ let addCardSaveButton = document.querySelector('#save-card'); // кнопка с
 
 let closePopupButton = document.querySelectorAll('.popup__close-button');
 
-for (var i = 0; i < closePopupButton.length; i++) {
+for (let i = 0; i < closePopupButton.length; i++) {
 
   closePopupButton[i].addEventListener('click', function () {
 
     closePopup();
+
+  });
+};
+
+let elementLikeButton = document.querySelectorAll('.element__like-button');
+
+for (let i = 0; i < elementLikeButton.length; i++) {
+
+  elementLikeButton[i].addEventListener('click', function (evt) {
+
+    evt.target.classList.toggle('element__like-button_active');
 
   });
 };
@@ -92,6 +102,11 @@ function openAddCardPopup() {
 
 function saveCard(evt) {
   evt.preventDefault();
+  let cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+  cardElement.querySelector('.element__image').src = addCardPlaceUrl.value;
+  cardElement.querySelector('.element__image').alt = addCardPlace.value;
+  cardElement.querySelector('.element__title').textContent = addCardPlace.value;
+  cardElements.prepend(cardElement);
   closePopup();
 };
 
