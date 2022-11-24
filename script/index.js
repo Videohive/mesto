@@ -8,19 +8,19 @@ const cardAddButton = document.querySelector('.profile__add'); // кнопка �
 const profileName = content.querySelector('.profile__name');
 const profileAbout = content.querySelector('.profile__about');
 
-const profileEdit = document.querySelector('.popup__profile-edit'); // popup редактирования профиля
+const profileEdit = document.querySelector('.popup-profile'); // popup редактирования профиля
 const profileEditForm = profileEdit.querySelector('.popup__form'); // popup form редактирования профиля
 const profileEditName = document.getElementById('name-input'); // popup input имени
 const profileEditAbout = document.getElementById('about-input'); // popup input о себе
 const profileEditSaveButton = document.querySelector('#save-profile'); // кнопка сохранения настроек профиля
 
-const cardAdd = document.querySelector('.popup__card-add'); // popup добавления карточки
+const cardAdd = document.querySelector('.popup-card'); // popup добавления карточки
 const cardAddForm = cardAdd.querySelector('.popup__form'); // popup form редактирования профиля
 const cardAddPlace = document.getElementById('place-input'); // popup input имени
 const cardAddPlaceUrl = document.getElementById('place-url-input'); // popup input о себе
 const cardAddSaveButton = document.querySelector('#save-card'); // кнопка сохранения настроек профиля
 
-const imagePopup = document.querySelector('.popup__image-open');
+const imagePopup = document.querySelector('.popup-image');
 const popupImage = imagePopup.querySelector('.popup__image');
 const popupImageCaption = imagePopup.querySelector('.popup__image-caption');
 
