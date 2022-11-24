@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,65 +8,78 @@
   <meta name="keywords" content="Место, путешествия, фото, яндекс практикум">
   <meta name="author" content="Тимур Харченко">
   <link rel="stylesheet" href="./pages/index.css">
-  <title>Mesto</title>
+  <title>Место</title>
 </head>
+
 <body class="body">
   <div class="page">
     <header class="header">
       <img src="./images/header-logo.svg" class="header__logo" alt="Логотип Mesto - Россия">
-  </header>
-  <main class="content">
-    <section class="profile">
-      <img src="./images/profile-avatar.jpg" class="profile__avatar" alt="Аватар пользователя">
-      <div class="profile__info">
-        <h1 class="profile__name">Жак-Ив Кусто</h1>
-        <button type="button" class="profile__edit"></button>
-        <p class="profile__about">Исследователь океана</p>
-      </div>
-      <button class="profile__add" type="button"></button>
-    </section>
-    <section class="elements">
-    </section>
-  </main>
-  <footer class="footer">
-    <p class="footer__copyright">&#169; 2022 Mesto Russia</p>
-  </footer>
-  <div id="edit-profile-popup" class="popup">
-    <div class="popup__container">
-      <h2 class="popup__title">Редактировать профиль</h2>
-      <form name="edit-profile" class="popup__form">
-        <fieldset class="popup__info">
+    </header>
+    <main class="content">
+      <section class="profile">
+        <img src="./images/profile-avatar.jpg" class="profile__avatar" alt="Аватар пользователя">
+        <div class="profile__info">
+          <h1 class="profile__name">Киану Ривз</h1>
+          <button type="button" class="profile__edit"></button>
+          <p class="profile__about">Зима, холода ...</p>
+        </div>
+        <button class="profile__add" type="button"></button>
+      </section>
+      <section class="elements">
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__copyright">&#169; 2022 Mesto Russia</p>
+    </footer>
+    <div id="edit-profile-popup" class="popup">
+      <div class="popup__container">
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <form name="edit-profile" class="popup__form">
+          <fieldset class="popup__info">
             <input name="name" placeholder="Имя" minlength="2" maxlength="40" id="name-input" class="popup__input">
-            <input name="about" placeholder="О себе" minlength="2" maxlength="200" id="about-input" class="popup__input">
-          <button type="submit" id="save-profile" class="popup__save-button">Сохранить</button>
-        </fieldset>
-    </form>
-    <button type="button" class="popup__close-button"></button>
+            <input name="about" placeholder="О себе" minlength="1" maxlength="200" id="about-input"
+              class="popup__input">
+            <button type="submit" id="save-profile" class="popup__save-button">Сохранить</button>
+          </fieldset>
+        </form>
+        <button type="button" class="popup__close-button"></button>
+      </div>
     </div>
-  </div>
-  <div id="add-card-popup" class="popup">
-    <div class="popup__container">
-      <h2 class="popup__title">Новое место</h2>
-      <form name="add-card" class="popup__form">
-        <fieldset class="popup__info">
-            <input name="place" placeholder="Название" minlength="2" maxlength="40" id="place-input" class="popup__input">
-            <input name="place-url" input type="url" placeholder="Ссылка на картинку" minlength="7" maxlength="200" id="place-url-input" class="popup__input">
-          <button type="submit" id="save-card" class="popup__save-button">Создать</button>
-        </fieldset>
-    </form>
-    <button type="button" class="popup__close-button"></button>
+    <div id="add-card-popup" class="popup">
+      <div class="popup__container">
+        <h2 class="popup__title">Новое место</h2>
+        <form name="add-card" class="popup__form">
+          <fieldset class="popup__info">
+            <input name="place" placeholder="Название" minlength="2" maxlength="40" id="place-input"
+              class="popup__input">
+            <input name="place-url" input type="url" placeholder="Ссылка на картинку" minlength="7" maxlength="200"
+              id="place-url-input" class="popup__input">
+            <button type="submit" id="save-card" class="popup__save-button">Создать</button>
+          </fieldset>
+        </form>
+        <button type="button" class="popup__close-button"></button>
+      </div>
     </div>
-  </div>
+    <div id="image-popup" class="popup">
+      <div class="popup__container-image">
+        <img class="popup__image" src="#" alt="Изображение, на которое вы кликнули">
+        <figcaption class="popup__image-caption"></figcaption>
+        <button type="button" class="popup__close-button"></button>
+      </div>
+    </div>
   </div>
   <template id="template-card">
-  <article class="element">
-    <img src="#" alt="изображение карточки" class="element__image">
-    <div class="element__container-text">
-      <h2 class="element__title">Место</h2>
-      <button type="button" class="element__like-button"></button>
-    </div>
-  </article>
-</template>
+    <article class="element">
+      <button type="button" class="element__trash-button"></button>
+      <img src="#" alt="изображение карточки" class="element__image">
+      <div class="element__container-text">
+        <h2 class="element__title">Место</h2>
+        <button type="button" class="element__like-button"></button>
+      </div>
+    </article>
+  </template>
   <script defer="defer" src="./script/index.js"></script>
 </body>
+
 </html>

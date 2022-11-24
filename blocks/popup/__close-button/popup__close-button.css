@@ -4,13 +4,13 @@
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: cover;
+  position: absolute;
   border: none;
   height: 32px;
-  padding: 0;
-  position: absolute;
   right: -40px;
   top: -40px;
   width: 32px;
+  padding: 0;
   transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
 }
@@ -20,7 +20,7 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 500px) {
   .popup__close-button {
     height: 20px;
     right: 0;
