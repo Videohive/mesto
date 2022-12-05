@@ -38,7 +38,7 @@
         <form name="edit-profile" class="popup__form">
           <fieldset class="popup__info">
             <input name="name" placeholder="Имя" minlength="2" maxlength="40" id="name-input" class="popup__input">
-            <input name="about" placeholder="О себе" minlength="1" maxlength="200" id="about-input"
+            <input name="about" placeholder="О себе" minlength="2" maxlength="200" id="about-input"
               class="popup__input">
             <button type="submit" id="save-profile" class="popup__save-button">Сохранить</button>
           </fieldset>
@@ -51,10 +51,10 @@
         <h2 class="popup__title">Новое место</h2>
         <form name="add-card" class="popup__form">
           <fieldset class="popup__info">
-            <input name="place" placeholder="Название" minlength="2" maxlength="40" id="place-input"
+            <input name="place" placeholder="Название" minlength="2" maxlength="30" id="place-input"
               class="popup__input">
-            <input name="place-url" input type="url" placeholder="Ссылка на картинку" minlength="7" maxlength="200"
-              id="place-url-input" class="popup__input">
+            <input name="place-url" input type="url" placeholder="Ссылка на картинку" id="place-url-input"
+              class="popup__input">
             <button type="submit" id="save-card" class="popup__save-button">Создать</button>
           </fieldset>
         </form>
@@ -80,6 +80,7 @@
     </article>
   </template>
   <script defer="defer" src="./script/cards.js"></script>
+  <script defer="defer" src="./script/validate.js"></script>
   <script defer="defer" src="./script/index.js"></script>
 </body>
 

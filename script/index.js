@@ -67,22 +67,42 @@ function fillImagePopup(element) {
 
 const popupCloseButton = document.querySelectorAll('.popup__close-button');
 
-popupCloseButton.forEach(function (item) {
-
+popupCloseButton.forEach(item => {
   item.addEventListener('click', function (evt) {
-
     closePopup(evt.target.parentNode.parentNode);
-
   });
 });
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener("keydown", closePopupKeyEsc);
 };
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener("keydown", closePopupKeyEsc);
 };
+
+const closePopupClickOverlay = (event, popupElement) => {
+  if (event.target === event.currentTarget) {
+    closePopup(popupElement);
+  };
+};
+
+const closePopupKeyEsc = (evt) => {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  };
+};
+
+const popupElements = document.querySelectorAll('.popup'); // массив всех элементов popup
+
+popupElements.forEach(popupElement => { // пройтись по каждому элементу массива popupElements
+  popupElement.addEventListener('click', (evt) => {
+    closePopupClickOverlay(evt, popupElement);
+  });
+});
 
 function openEditProfilePopup() {
   openPopup(profileEdit)
