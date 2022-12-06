@@ -63,8 +63,17 @@ function fillImagePopup(element) {
   popupImageCaption.textContent = element.alt;
 };
 
-// Кнопка закрытия popup
+// Функция очистки ошибки, после закрытия popup
 
+function popupCleanError(popup) {
+  const popupTarget = popup.querySelector('.popup__info');
+  const popupInput = popupTarget.querySelectorAll('.popup__input');
+  popupInput.forEach(item => {
+    hideInputError(popupTarget, item);
+  });
+};
+
+// Кнопка закрытия popup
 const popupCloseButton = document.querySelectorAll('.popup__close-button');
 
 popupCloseButton.forEach(item => {
@@ -81,6 +90,7 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener("keydown", closePopupKeyEsc);
+  popupCleanError(popup);
 };
 
 const closePopupClickOverlay = (event, popupElement) => {
@@ -108,6 +118,7 @@ function openEditProfilePopup() {
   openPopup(profileEdit)
   profileEditName.value = profileName.textContent;
   profileEditAbout.value = profileAbout.textContent;
+  enableValidation();
 };
 
 function saveProfile(evt) {
@@ -126,26 +137,20 @@ function openAddCardPopup() {
   openPopup(cardAdd)
   cardAddPlace.value = '';
   cardAddPlaceUrl.value = '';
+  enableValidation();
 };
 
 function saveCard(evt) {
   evt.preventDefault();
 
-  if (cardAddPlace.value.length === 0) {
-    alert('Введите название места');
-  } else if (cardAddPlaceUrl.value.length === 0) {
-    alert('Введите ссылку на картинку');
-  } else {
+  const cardTitle = cardAddPlace.value;
+  const cardLink = cardAddPlaceUrl.value;
 
-    const cardTitle = cardAddPlace.value;
-    const cardLink = cardAddPlaceUrl.value;
-
-    renderCard(createdCard({
-      name: `${cardTitle}`,
-      link: `${cardLink}`
-    }));
-    closePopup(cardAdd);
-  };
+  renderCard(createdCard({
+    name: `${cardTitle}`,
+    link: `${cardLink}`
+  }));
+  closePopup(cardAdd);
 };
 
 initialCards.reverse().forEach(function (card) { // добавление стартовых карточек
