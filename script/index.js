@@ -121,6 +121,8 @@ function openAddCardPopup() {
   openPopup(cardAdd)
   cardAddPlace.value = '';
   cardAddPlaceUrl.value = '';
+  cardAddSaveButton.classList.add('popup__button_disabled');
+  cardAddSaveButton.setAttribute('disabled', true);
 };
 
 function saveCard(evt) {
