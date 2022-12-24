@@ -1,4 +1,6 @@
-const cardTemplate = document.querySelector('.template-card').content; // шаблон карточки
+import {Card} from "./card.js";
+
+const templateSelector = ".template-card";
 const cardsContainer = document.querySelector('.elements');
 
 const content = document.querySelector('.profile');
@@ -12,7 +14,6 @@ const profileEdit = document.querySelector('.popup-profile'); // popup реда�
 const profileEditForm = profileEdit.querySelector('.popup__form'); // popup form редактирования профиля
 const profileEditName = document.getElementById('name-input'); // popup input имени
 const profileEditAbout = document.getElementById('about-input'); // popup input о себе
-const profileEditSaveButton = document.querySelector('#save-profile'); // кнопка сохранения настроек профиля
 
 const cardAdd = document.querySelector('.popup-card'); // popup добавления карточки
 const cardAddForm = cardAdd.querySelector('.popup__form'); // popup form редактирования профиля
@@ -24,45 +25,20 @@ const imagePopup = document.querySelector('.popup-image');
 const popupImage = imagePopup.querySelector('.popup__image');
 const popupImageCaption = imagePopup.querySelector('.popup__image-caption');
 
-function createdCard(card) { // создание карточки
-  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
-  const cardElementImage = cardElement.querySelector('.element__image');
-  cardElementImage.src = card.link;
-  cardElementImage.alt = card.name;
-  cardElement.querySelector('.element__title').textContent = card.name;
-
-  // кнопка лайка
-  const elementLikeButton = cardElement.querySelector('.element__like-button');
-  elementLikeButton.addEventListener('click', function () {
-    elementLikeButton.classList.toggle('element__like-button_active');
-  });
-
-  // кнопка удаления
-  const deleteCardButton = cardElement.querySelector('.element__trash-button');
-  deleteCardButton.addEventListener('click', function (evt) {
-    evt.target.closest('.element').remove();
-  });
-
-  // кнопка открытия изображения
-  const imageButton = cardElement.querySelector('.element__image');
-  imageButton.addEventListener('click', function () {
-    openPopup(imagePopup);
-    fillImagePopup(imageButton);
-  });
-
-  return cardElement;
+function createdCard(values, template) { // создание карточки
+  const newElement = new Card({
+      name: values.name,
+      link: values.link,
+    },
+    template,
+    openPopup
+  );
+  return newElement.generateCard();
 };
 
 function renderCard(card) {
   cardsContainer.prepend(card);
 };
-
-function fillImagePopup(element) {
-  popupImage.src = element.src;
-  popupImageCaption.alt = element.alt;
-  popupImageCaption.textContent = element.alt;
-};
-
 
 // Кнопка закрытия popup
 const popupCloseButtonList = document.querySelectorAll('.popup__close-button');
@@ -73,7 +49,7 @@ popupCloseButtonList.forEach(item => {
   });
 });
 
-function openPopup(popup) {
+const openPopup = (popup) => {
   popup.classList.add('popup_opened');
   document.addEventListener("keydown", closePopupKeyEsc);
 };
@@ -112,9 +88,9 @@ function openEditProfilePopup() {
 
 function saveProfile(evt) {
   evt.preventDefault();
-    profileName.textContent = profileEditName.value; // Вставьте новые значения с помощью textContent
-    profileAbout.textContent = profileEditAbout.value;
-    closePopup(profileEdit);
+  profileName.textContent = profileEditName.value; // Вставьте новые значения с помощью textContent
+  profileAbout.textContent = profileEditAbout.value;
+  closePopup(profileEdit);
 };
 
 function openAddCardPopup() {
@@ -131,15 +107,13 @@ function saveCard(evt) {
   const cardTitle = cardAddPlace.value;
   const cardLink = cardAddPlaceUrl.value;
 
-  renderCard(createdCard({
-    name: `${cardTitle}`,
-    link: `${cardLink}`
-  }));
-  closePopup(cardAdd);
+  renderCard(createdCard(
+    {name: `${cardTitle}`,link: `${cardLink}`}, templateSelector));
+    closePopup(cardAdd);
 };
 
 initialCards.reverse().forEach(function (card) { // добавление стартовых карточек
-  renderCard(createdCard(card));
+  renderCard(createdCard(card, templateSelector));
 });
 
 profileOpenButton.addEventListener('click', openEditProfilePopup);
@@ -147,3 +121,10 @@ profileEditForm.addEventListener('submit', saveProfile);
 
 cardAddButton.addEventListener('click', openAddCardPopup);
 cardAddForm.addEventListener('submit', saveCard);
+
+export {
+  imagePopup,
+  popupImage,
+  popupImageCaption,
+  openPopup
+}
