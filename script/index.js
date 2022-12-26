@@ -1,4 +1,5 @@
 import {Card} from "./card.js";
+import {FormValidator, selectorsCollection} from "./FormValidator.js";
 
 const templateSelector = ".template-card";
 const cardsContainer = document.querySelector('.elements');
@@ -16,7 +17,7 @@ const profileEditName = document.getElementById('name-input'); // popup input и
 const profileEditAbout = document.getElementById('about-input'); // popup input о себе
 
 const cardAdd = document.querySelector('.popup-card'); // popup добавления карточки
-const cardAddForm = cardAdd.querySelector('.popup__form'); // popup form редактирования профиля
+const cardAddForm = cardAdd.querySelector('.popup__form'); // popup form добавления карточки
 const cardAddPlace = document.getElementById('place-input'); // popup input имени
 const cardAddPlaceUrl = document.getElementById('place-url-input'); // popup input о себе
 const cardAddSaveButton = document.querySelector('#save-card'); // кнопка сохранения настроек профиля
@@ -24,6 +25,12 @@ const cardAddSaveButton = document.querySelector('#save-card'); // кнопка 
 const imagePopup = document.querySelector('.popup-image');
 const popupImage = imagePopup.querySelector('.popup__image');
 const popupImageCaption = imagePopup.querySelector('.popup__image-caption');
+
+const validationFormEditProfile = new FormValidator(selectorsCollection, ".popup__form-edit-profile");
+const validationFormAddCard = new FormValidator(selectorsCollection, ".popup__form-add-card");
+
+validationFormEditProfile.enableValidation();
+validationFormAddCard.enableValidation();
 
 function createdCard(values, template) { // создание карточки
   const newElement = new Card({
