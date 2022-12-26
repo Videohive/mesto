@@ -55,23 +55,24 @@ export class FormValidator {
     });
   };
 
+  setButtonDisable() { // Refactoring публичный метод отключения кнопки, код ревью
+    this._buttonElement.setAttribute('disabled', true);
+    this._buttonElement.classList.add(this._inactiveButtonClass);
+  }
+
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
-      this._buttonElement.setAttribute('disabled', true);
-      this._buttonElement.classList.add(this._inactiveButtonClass);
+      this.setButtonDisable()
     } else {
       this._buttonElement.removeAttribute('disabled', true);
       this._buttonElement.classList.remove(this._inactiveButtonClass);
     };
   };
 
+
   enableValidation() {
-    this._formElement.addEventListener("submit", function (evt) {
-      evt.preventDefault();
-    });
     this._setEventListeners();
   };
-
 };
 
 export const selectorsCollection = {

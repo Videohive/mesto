@@ -1,4 +1,4 @@
-const initialCards = [{
+export const initialCards = [{
   name: 'Москва',
   link: 'https://images.unsplash.com/photo-1512495039889-52a3b799c9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
 },

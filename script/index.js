@@ -1,5 +1,6 @@
-import {Card} from "./card.js";
-import {FormValidator, selectorsCollection} from "./FormValidator.js";
+import {Card} from "./Card.js";
+import {FormValidator,selectorsCollection} from "./FormValidator.js";
+import {initialCards} from "./initialCards.js";
 
 const templateSelector = ".template-card";
 const cardsContainer = document.querySelector('.elements');
@@ -37,8 +38,7 @@ function createdCard(values, template) { // создание карточки
       name: values.name,
       link: values.link,
     },
-    template,
-    openPopup
+    template
   );
   return newElement.generateCard();
 };
@@ -47,32 +47,23 @@ function renderCard(card) {
   cardsContainer.prepend(card);
 };
 
-// Кнопка закрытия popup
-const popupCloseButtonList = document.querySelectorAll('.popup__close-button');
-
-popupCloseButtonList.forEach(item => {
-  item.addEventListener('click', function (evt) {
-    closePopup(evt.target.closest('.popup'));
-  });
-});
-
 const openPopup = (popup) => {
   popup.classList.add('popup_opened');
-  document.addEventListener("keydown", closePopupKeyEsc);
+  document.addEventListener("keydown", handleCloseByEsc);
 };
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener("keydown", closePopupKeyEsc);
+  document.removeEventListener("keydown", handleCloseByEsc);
 };
 
-const closePopupClickOverlay = (event, popupElement) => {
-  if (event.target === event.currentTarget) {
+const handleCloseByClick = (event, popupElement) => {
+  if (event.target === event.currentTarget || event.target.classList.contains('popup__close-button')) {
     closePopup(popupElement);
   };
 };
 
-const closePopupKeyEsc = (evt) => {
+const handleCloseByEsc = (evt) => {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
@@ -83,7 +74,7 @@ const popupElements = document.querySelectorAll('.popup'); // массив вс�
 
 popupElements.forEach(popupElement => { // пройтись по каждому элементу массива popupElements
   popupElement.addEventListener('click', (evt) => {
-    closePopupClickOverlay(evt, popupElement);
+    handleCloseByClick(evt, popupElement);
   });
 });
 
@@ -102,10 +93,8 @@ function saveProfile(evt) {
 
 function openAddCardPopup() {
   openPopup(cardAdd)
-  cardAddPlace.value = '';
-  cardAddPlaceUrl.value = '';
-  cardAddSaveButton.classList.add('popup__button_disabled');
-  cardAddSaveButton.setAttribute('disabled', true);
+  cardAddForm.reset();
+  validationFormAddCard.setButtonDisable()
 };
 
 function saveCard(evt) {
@@ -114,9 +103,11 @@ function saveCard(evt) {
   const cardTitle = cardAddPlace.value;
   const cardLink = cardAddPlaceUrl.value;
 
-  renderCard(createdCard(
-    {name: `${cardTitle}`,link: `${cardLink}`}, templateSelector));
-    closePopup(cardAdd);
+  renderCard(createdCard({
+    name: `${cardTitle}`,
+    link: `${cardLink}`
+  }, templateSelector));
+  closePopup(cardAdd);
 };
 
 initialCards.reverse().forEach(function (card) { // добавление стартовых карточек

@@ -6,8 +6,8 @@ export class Card {
     this._link = cardParameter.link;
     this._templateSelector = templateSelector;
     this._element = this._getTemplate();
-    this._likeButton = this._element.querySelector('.element__like-button');
-    this._deleteButton = this._element.querySelector('.element__trash-button');
+    this._buttonLike = this._element.querySelector('.element__like-button'); // Refactoring имена свойств класса должны начинаться с имени существительного
+    this._buttonDelete = this._element.querySelector('.element__trash-button');
     this._cardTitle = this._element.querySelector('.element__title');
     this._cardImage = this._element.querySelector('.element__image');
   };
@@ -22,7 +22,7 @@ export class Card {
   };
 
   _handleLikeClick() {
-    this._likeButton.classList.toggle('element__like-button_active');
+    this._buttonLike.classList.toggle('element__like-button_active');
   };
 
   _handleDeleteClick() {
@@ -32,13 +32,14 @@ export class Card {
 
   _handleOpenImagePopup() {
     popupImage.src = this._cardImage.src;
+    popupImage.alt = this._cardTitle.textContent; // Refactoring добавить alt для картинки
     popupImageCaption.textContent = this._cardTitle.textContent;
     openPopup(imagePopup);
   };
 
   _setEventListeners() {
-    this._likeButton.addEventListener('click', () => this._handleLikeClick());
-    this._deleteButton.addEventListener('click', () => this._handleDeleteClick());
+    this._buttonLike.addEventListener('click', () => this._handleLikeClick());
+    this._buttonDelete.addEventListener('click', () => this._handleDeleteClick());
     this._cardImage.addEventListener('click', () => this._handleOpenImagePopup());
   };
 
