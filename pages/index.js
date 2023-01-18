@@ -1,6 +1,6 @@
-import {Card} from "./Card.js";
-import {FormValidator,selectorsCollection} from "./FormValidator.js";
-import {initialCards} from "./initialCards.js";
+import {Card} from "../components/Card.js";
+import {FormValidator,selectorsCollection} from "../components/FormValidator.js";
+import {initialCards} from "../utils/constants.js";
 
 const templateSelector = ".template-card";
 const cardsContainer = document.querySelector('.elements');

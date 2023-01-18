@@ -1,4 +1,4 @@
-import {imagePopup, popupImage, popupImageCaption, openPopup} from './index.js'
+import {imagePopup, popupImage, popupImageCaption, openPopup} from '../pages/index.js'
 
 export class Card {
   constructor(cardParameter, templateSelector) {
