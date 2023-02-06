@@ -1,10 +1,9 @@
-import {imagePopup, popupImage, popupImageCaption, openPopup} from '../pages/index.js'
-
 export class Card {
-  constructor(cardParameter, templateSelector) {
+  constructor(cardParameter, templateSelector, handleCardClick) {
     this._name = cardParameter.name;
     this._link = cardParameter.link;
     this._templateSelector = templateSelector;
+    this.handleCardClick = handleCardClick;
     this._element = this._getTemplate();
     this._buttonLike = this._element.querySelector('.element__like-button'); // Refactoring имена свойств класса должны начинаться с имени существительного
     this._buttonDelete = this._element.querySelector('.element__trash-button');
@@ -31,10 +30,11 @@ export class Card {
   };
 
   _handleOpenImagePopup() {
-    popupImage.src = this._cardImage.src;
-    popupImage.alt = this._cardTitle.textContent; // Refactoring добавить alt для картинки
-    popupImageCaption.textContent = this._cardTitle.textContent;
-    openPopup(imagePopup);
+    this.handleCardClick(this._link, this._name);
+    // popupImage.src = this._cardImage.src;
+    // popupImage.alt = this._cardTitle.textContent; // Refactoring добавить alt для картинки
+    // popupImageCaption.textContent = this._cardTitle.textContent;
+    // openPopup(imagePopup);
   };
 
   _setEventListeners() {

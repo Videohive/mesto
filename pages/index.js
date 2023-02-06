@@ -1,9 +1,19 @@
 import {Card} from "../components/Card.js";
-import {FormValidator,selectorsCollection} from "../components/FormValidator.js";
-import {initialCards} from "../utils/constants.js";
+import {FormValidator, selectorsCollection} from "../components/FormValidator.js";
+import { Section } from "../components/Section.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
+import { PopupWithForm } from "../components/PopupWithForm.js";
+
+// импорт переменных
+
+import {
+  initialCards,
+  selectorPopupImage
+} from "../utils/constants.js";
 
 const templateSelector = ".template-card";
 const cardsContainer = document.querySelector('.elements');
+const cardsSelector = '.elements'
 
 const content = document.querySelector('.profile');
 const profileOpenButton = document.querySelector('.profile__edit'); // кнопка редактирования профиля
@@ -23,25 +33,45 @@ const cardAddPlace = document.getElementById('place-input'); // popup input им
 const cardAddPlaceUrl = document.getElementById('place-url-input'); // popup input о себе
 const cardAddSaveButton = document.querySelector('#save-card'); // кнопка сохранения настроек профиля
 
-const imagePopup = document.querySelector('.popup-image');
+const imagePopup = document.querySelector('.popup-image'); // селектор клика по картинке
 const popupImage = imagePopup.querySelector('.popup__image');
 const popupImageCaption = imagePopup.querySelector('.popup__image-caption');
 
-const validationFormEditProfile = new FormValidator(selectorsCollection, ".popup__form-edit-profile");
-const validationFormAddCard = new FormValidator(selectorsCollection, ".popup__form-add-card");
+const validationFormEditProfile = new FormValidator(selectorsCollection, '.popup__form-edit-profile');
+const validationFormAddCard = new FormValidator(selectorsCollection, '.popup__form-add-card');
 
 validationFormEditProfile.enableValidation();
 validationFormAddCard.enableValidation();
 
-function createdCard(values, template) { // создание карточки
+const handleCardClick = (link, name) => {
+  openImagePopup.open(link, name);
+};
+
+const openImagePopup = new PopupWithImage(selectorPopupImage)
+
+const createdCard = (values) => { // создание карточки
   const newElement = new Card({
       name: values.name,
       link: values.link,
     },
-    template
+    templateSelector,
+    handleCardClick
   );
   return newElement.generateCard();
 };
+
+const baseCards = new Section(
+  {
+    items: initialCards.reverse(),
+    renderer: (item) => {
+      const newCard = createdCard(item);
+      baseCards.addItem(newCard);
+    },
+  },
+  cardsSelector
+);
+
+baseCards.renderItems(); // метод класса Section - вывод на страницу
 
 function renderCard(card) {
   cardsContainer.prepend(card);
@@ -109,10 +139,6 @@ function saveCard(evt) {
   }, templateSelector));
   closePopup(cardAdd);
 };
-
-initialCards.reverse().forEach(function (card) { // добавление стартовых карточек
-  renderCard(createdCard(card, templateSelector));
-});
 
 profileOpenButton.addEventListener('click', openEditProfilePopup);
 profileEditForm.addEventListener('submit', saveProfile);

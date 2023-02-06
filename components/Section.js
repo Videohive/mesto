@@ -1,4 +1,4 @@
-export class Scetion {
+export class Section {
   constructor({items, renderer}, container) {
     this._items = items; // массив объектов для отображения
     this._renderer = renderer;
