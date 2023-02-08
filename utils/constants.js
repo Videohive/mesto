@@ -24,5 +24,20 @@ export const initialCards = [{
 }
 ];
 
-// Селектор просмотра картинки
-export const selectorPopupImage = '.popup-image';
+export const profileOpenButton = document.querySelector('.profile__edit'); // кнопка редактирования профиля
+export const cardAddButton = document.querySelector('.profile__add'); // кнопка добавления карточки
+
+export const selectorEditProfile = '.popup-profile'; // селектор попапа редактирования профиля
+export const selectorProfileName = '.profile__name'; // селектор имени профиля
+export const selectorProfileAbout = '.profile__about'; // селектор подписи профиля
+
+export const selectorPopupImage = '.popup-image'; // селектор просмотра картинки
+
+export const selectorsCollection = {
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
