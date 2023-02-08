@@ -9,24 +9,17 @@ import { UserInfo } from '../components/UserInfo.js';
 
 import {
   initialCards,
+  cardsSelector, // селектор секции добавления карточек
   cardAddButton,
+  selectorAddCard, // селектор контейнера с формой добавления карточки
+  templateSelector,
   profileOpenButton,
   selectorEditProfile,
   selectorProfileName,
   selectorProfileAbout,
   selectorPopupImage,
   selectorsCollection,
-} from "../utils/constants.js";
-
-const templateSelector = ".template-card";
-const cardsContainer = document.querySelector('.elements');
-const cardsSelector = '.elements'
-
-const cardAdd = document.querySelector('.popup-card'); // popup добавления карточки
-const cardAddForm = cardAdd.querySelector('.popup__form'); // popup form добавления карточки
-const cardAddPlace = document.getElementById('place-input'); // popup input имени
-const cardAddPlaceUrl = document.getElementById('place-url-input'); // popup input о себе
-const cardAddSaveButton = document.querySelector('#save-card'); // кнопка сохранения настроек профиля
+} from '../utils/constants.js';
 
 const validationFormEditProfile = new FormValidator(selectorsCollection, '.popup__form-edit-profile');
 const validationFormAddCard = new FormValidator(selectorsCollection, '.popup__form-add-card');
@@ -51,8 +44,7 @@ const createdCard = (values) => { // создание карточки
   return newElement.generateCard();
 };
 
-const baseCards = new Section(
-  {
+const baseCards = new Section({
     items: initialCards.reverse(),
     renderer: (item) => {
       const newCard = createdCard(item);
@@ -63,41 +55,6 @@ const baseCards = new Section(
 );
 
 baseCards.renderItems(); // метод класса Section - вывод на страницу
-
-function renderCard(card) {
-  cardsContainer.prepend(card);
-};
-
-const openPopup = (popup) => {
-  popup.classList.add('popup_opened');
-  document.addEventListener("keydown", handleCloseByEsc);
-};
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener("keydown", handleCloseByEsc);
-};
-
-const handleCloseByClick = (event, popupElement) => {
-  if (event.target === event.currentTarget || event.target.classList.contains('popup__close-button')) {
-    closePopup(popupElement);
-  };
-};
-
-const handleCloseByEsc = (evt) => {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-  };
-};
-
-const popupElements = document.querySelectorAll('.popup'); // массив всех элементов popup
-
-popupElements.forEach(popupElement => { // пройтись по каждому элементу массива popupElements
-  popupElement.addEventListener('click', (evt) => {
-    handleCloseByClick(evt, popupElement);
-  });
-});
 
 const openEditProfilePopup = () => { // открытие попапа редактирования профиля
 
@@ -123,32 +80,26 @@ const popupEditProfile = new PopupWithForm( // попап редактирова
   handleFormSubmitEditProfile
 );
 
-function openAddCardPopup() {
-  openPopup(cardAdd)
-  cardAddForm.reset();
-  validationFormAddCard.setButtonDisable()
+const handleFormSubmitAddCard = (event, valuesForm) => {
+  event.preventDefault();
+  const { place, place_url } = valuesForm;
+  const cardElement = createdCard({ name: place, link: place_url });
+  baseCards.addItem(cardElement);
+  popupAddCard.close();
 };
 
-function saveCard(evt) {
-  evt.preventDefault();
-
-  const cardTitle = cardAddPlace.value;
-  const cardLink = cardAddPlaceUrl.value;
-
-  renderCard(createdCard({
-    name: `${cardTitle}`,
-    link: `${cardLink}`
-  }, templateSelector));
-  closePopup(cardAdd);
-};
+const popupAddCard = new PopupWithForm( // попап добавления карточки
+  selectorAddCard,
+  handleFormSubmitAddCard
+);
 
 const userInfo = new UserInfo({
   selectorProfileName,
   selectorProfileAbout,
 });
 
-profileOpenButton.addEventListener('click', openEditProfilePopup);
-// profileEditForm.addEventListener('submit', saveProfile);
+profileOpenButton.addEventListener('click', openEditProfilePopup); // слушатель редактирования профиля
 
-cardAddButton.addEventListener('click', openAddCardPopup);
-cardAddForm.addEventListener('submit', saveCard);
+cardAddButton.addEventListener('click', function () { // слушатель добавления карточки
+  popupAddCard.open();
+});

@@ -27,11 +27,16 @@ export const initialCards = [{
 export const profileOpenButton = document.querySelector('.profile__edit'); // кнопка редактирования профиля
 export const cardAddButton = document.querySelector('.profile__add'); // кнопка добавления карточки
 
+export const cardsSelector = '.elements' // селектор секции добавления карточек
+
 export const selectorEditProfile = '.popup-profile'; // селектор попапа редактирования профиля
 export const selectorProfileName = '.profile__name'; // селектор имени профиля
 export const selectorProfileAbout = '.profile__about'; // селектор подписи профиля
 
 export const selectorPopupImage = '.popup-image'; // селектор просмотра картинки
+
+export const selectorAddCard = ".popup-card";
+export const templateSelector = ".template-card";
 
 export const selectorsCollection = {
   inputSelector: '.popup__input',
