@@ -84,8 +84,8 @@ const popupEditProfile = new PopupWithForm( // попап редактирова
 
 const handleFormSubmitAddCard = (event, valuesForm) => {
   event.preventDefault();
-  const { place, place_url } = valuesForm;
-  const cardElement = createdCard({ name: place, link: place_url });
+  const { place, url } = valuesForm;
+  const cardElement = createdCard({ name: place, link: url });
   baseCards.addItem(cardElement);
   popupAddCard.close();
 };
