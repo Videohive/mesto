@@ -31,7 +31,7 @@ export class Popup {
   setEventListeners() {
     this._buttonClose.addEventListener('click', this.handleClosePopup);
     document.addEventListener('keyup', this._handleEscClose);
-    this._popup.addEventListener('click', this.handleCloseByClick);
+    this._popup.addEventListener('mousedown', this.handleCloseByClick); // смена события с click на mousedown
   }
 
   open() {

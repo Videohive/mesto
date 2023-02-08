@@ -11,6 +11,8 @@ import { UserInfo } from '../components/UserInfo.js';
 
 import {
   initialCards,
+  profileName,
+  profileAbout,
   cardsSelector, // селектор секции добавления карточек
   cardAddButton,
   selectorAddCard, // селектор контейнера с формой добавления карточки
@@ -62,9 +64,8 @@ const openEditProfilePopup = () => { // открытие попапа редак
 
   const { name, about } = userInfo.getUserInfo();
 
-  const form = document.forms.edit_profile;
-  form.elements.name.value = name;
-  form.elements.about.value = about;
+  profileName.value = name;
+  profileAbout.value = about;
 
   popupEditProfile.open();
 
@@ -88,6 +89,7 @@ const handleFormSubmitAddCard = (event, valuesForm) => {
   const cardElement = createdCard({ name: place, link: url });
   baseCards.addItem(cardElement);
   popupAddCard.close();
+  validationFormAddCard.setButtonDisable() // отключение кнопки
 };
 
 const popupAddCard = new PopupWithForm( // попап добавления карточки

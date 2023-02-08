@@ -24,6 +24,10 @@ export const initialCards = [{
 }
 ];
 
+const profileForm = document.forms.edit_profile;
+export const profileName = profileForm.elements.name
+export const profileAbout = profileForm.elements.about
+
 export const profileOpenButton = document.querySelector('.profile__edit'); // кнопка редактирования профиля
 export const cardAddButton = document.querySelector('.profile__add'); // кнопка добавления карточки
 
