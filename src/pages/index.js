@@ -1,4 +1,8 @@
+// импорт стилей для вебпака
+
 import './index.css';
+
+// импорт классов
 
 import { Card } from '../components/Card.js';
 import { FormValidator } from '../components/FormValidator.js';
@@ -6,6 +10,7 @@ import { Section } from '../components/Section.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
+import { Api } from "../components/Api.js";
 
 // импорт переменных
 
@@ -49,16 +54,19 @@ const createdCard = (values) => { // создание карточки
 };
 
 const baseCards = new Section({
-    items: initialCards.reverse(),
+
     renderer: (item) => {
-      const newCard = createdCard(item);
+      const newCard = createdCard({
+        ...item,
+        idCurrentUser: userInfo.id,
+      });
       baseCards.addItem(newCard);
     },
   },
   cardsSelector
 );
 
-baseCards.renderItems(); // метод класса Section - вывод на страницу
+//baseCards.renderItems(); // метод класса Section - вывод на страницу
 
 const openEditProfilePopup = () => { // открытие попапа редактирования профиля
 
@@ -101,6 +109,29 @@ const userInfo = new UserInfo({
   selectorProfileName,
   selectorProfileAbout,
 });
+
+// Api
+
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-58',
+  headers: {
+    authorization: '60cd4e7e-5160-4d08-8f0d-74282e71abaa',
+    'Content-Type': 'application/json',
+  },
+});
+
+const apiGetUserInfo = api.getUserInfo(); // информация о пользователи
+
+const apiGetInitialCards = api.getInitialCards(); // стартовые карточки
+
+Promise.all([apiGetUserInfo, apiGetInitialCards])
+  .then(([userData, cardsData]) => {
+    userInfo.setUserInfo(userData.name, userData.about);
+    userInfo.id = userData._id;
+
+    baseCards.renderItems(cardsData)
+  })
+
 
 profileOpenButton.addEventListener('click', openEditProfilePopup); // слушатель редактирования профиля
 

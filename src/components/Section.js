@@ -1,7 +1,6 @@
 export class Section {
-  constructor({items, renderer}, container) {
-    this._items = items; // массив объектов для отображения
-    this._renderer = renderer;
+  constructor({renderer}, container) {
+    this._renderer = renderer; // колбэк функция обработки элемента массива
     this._container = document.querySelector(container); // селектор контейнера для вставки контента
   }
 
@@ -9,10 +8,10 @@ _clear() { // приватный метод, для очистки контей�
   this._container.innerHTML = '';
 }
 
-renderItems() {
-  this._clear();
-  this._items.forEach(item => {
-    this._renderer(item);
+renderItems = (items) => {
+  this._clear(); // оцищение контента
+  items.forEach(item => { // использование колбэк для каждого элемента массива
+    this._renderer(item)
   })
 }
 
