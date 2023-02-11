@@ -15,14 +15,15 @@ import { Api } from "../components/Api.js";
 // импорт переменных
 
 import {
-  initialCards,
   profileName,
   profileAbout,
   cardsSelector, // селектор секции добавления карточек
   cardAddButton,
+  cardSubmitButton,
   selectorAddCard, // селектор контейнера с формой добавления карточки
   templateSelector,
   profileOpenButton,
+  profileEditSubmitButton, // кнопка отправки формы редактирования профиля
   selectorEditProfile,
   selectorProfileName,
   selectorProfileAbout,
@@ -36,16 +37,24 @@ const validationFormAddCard = new FormValidator(selectorsCollection, '.popup__fo
 validationFormEditProfile.enableValidation();
 validationFormAddCard.enableValidation();
 
+const changeStatusButtonSubmit = (button, text = 'Сохранить', status = true) => {
+  button.textContent = text;
+  button.disabled = !status;
+  status
+    ? button.classList.remove('popup__button_disable')
+    : button.classList.add('popup__button_disable');
+}
+
 const handleCardClick = (link, name) => { // открытие попапа картинки
   openImagePopup.open(link, name);
 };
 
 const openImagePopup = new PopupWithImage(selectorPopupImage) // попап картинки
 
-const createdCard = (values) => { // создание карточки
+const createdCard = (data) => { // создание карточки
   const newElement = new Card({
-      name: values.name,
-      link: values.link,
+      ... data,
+      idCurrentUser: userInfo.id,
     },
     templateSelector,
     handleCardClick
@@ -53,7 +62,7 @@ const createdCard = (values) => { // создание карточки
   return newElement.generateCard();
 };
 
-const baseCards = new Section({
+const baseCards = new Section({ // вставка карточек на страницу
 
     renderer: (item) => {
       const newCard = createdCard({
@@ -66,24 +75,41 @@ const baseCards = new Section({
   cardsSelector
 );
 
-//baseCards.renderItems(); // метод класса Section - вывод на страницу
-
 const openEditProfilePopup = () => { // открытие попапа редактирования профиля
 
   const { name, about } = userInfo.getUserInfo();
-
   profileName.value = name;
   profileAbout.value = about;
-
   popupEditProfile.open();
 
 };
 
 const handleFormSubmitEditProfile = (event, valuesForm) => {
   event.preventDefault();
+  changeStatusButtonSubmit(profileEditSubmitButton, 'Сохраненяю...', false)
   const { name, about } = valuesForm;
-  userInfo.setUserInfo(name, about)
-  popupEditProfile.close();
+
+  api.patchUserInfo(name, about)
+  .then((data) => {
+    if (!data) {
+      return Promise.reject(`Ошибка получения данных`);
+    } else {
+      userInfo.setUserInfo(data.name, data.about);
+      changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранено', false)
+    }
+  })
+
+  .catch((err) => {
+    changeStatusButtonSubmit(profileEditSubmitButton, 'Ошибка запроса', false)
+    console.log(err);
+  })
+
+  .finally(() => {
+    setTimeout(() => {
+      changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранить')
+      popupEditProfile.close();
+    }, 800);
+  });
 };
 
 const popupEditProfile = new PopupWithForm( // попап редактирования профиля
@@ -93,11 +119,32 @@ const popupEditProfile = new PopupWithForm( // попап редактирова
 
 const handleFormSubmitAddCard = (event, valuesForm) => {
   event.preventDefault();
+  changeStatusButtonSubmit(cardSubmitButton, 'Добавляю...', false)
   const { place, url } = valuesForm;
-  const cardElement = createdCard({ name: place, link: url });
-  baseCards.addItem(cardElement);
-  popupAddCard.close();
-  validationFormAddCard.setButtonDisable() // отключение кнопки
+
+  api.addCard(place, url)
+  .then((data) => {
+    if (!data) {
+      return Promise.reject(`Ошибка получения данных`);
+    } else {
+      const cardElement = createdCard({ ...data});
+      baseCards.addItem(cardElement);
+      changeStatusButtonSubmit(cardSubmitButton, 'Добавлено', false)
+    }
+  })
+
+  .catch((err) => {
+    changeStatusButtonSubmit(cardSubmitButton, 'Ошибка запроса :(', false)
+    console.log(err);
+  })
+
+  .finally(() => {
+    setTimeout(() => {
+      changeStatusButtonSubmit(cardSubmitButton, 'Cоздать')
+      popupAddCard.close();
+      validationFormAddCard.setButtonDisable() // отключение кнопки
+    }, 800);
+  });
 };
 
 const popupAddCard = new PopupWithForm( // попап добавления карточки
@@ -111,7 +158,6 @@ const userInfo = new UserInfo({
 });
 
 // Api
-
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-58',
   headers: {
@@ -129,7 +175,7 @@ Promise.all([apiGetUserInfo, apiGetInitialCards])
     userInfo.setUserInfo(userData.name, userData.about);
     userInfo.id = userData._id;
 
-    baseCards.renderItems(cardsData)
+    baseCards.renderItems(cardsData.reverse())
   })
 
 
