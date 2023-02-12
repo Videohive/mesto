@@ -89,13 +89,10 @@ const createdCard = (data) => { // создание карточки
           changeStatusButtonSubmit(cardDeleteButton, 'Удаляю...', false)
           api.removeCard(cardData._id)
 
-            .then((data) => {
-              if (!data) {
-                return Promise.reject(`Ошибка получения данных`);
-              } else {
+            .then(() => {
                 newElement.remove();
                 changeStatusButtonSubmit(cardDeleteButton, 'Удалено', false)
-              }
+                popupDeleteCard.close();
             })
 
             .catch((err) => {
@@ -104,10 +101,7 @@ const createdCard = (data) => { // создание карточки
             })
 
             .finally(() => {
-              setTimeout(() => {
                 changeStatusButtonSubmit(cardDeleteButton, 'Да', false)
-                popupDeleteCard.close();
-              }, 800);
             })
         })
       },
@@ -152,12 +146,9 @@ const handleFormSubmitEditProfile = (event, valuesForm) => {
 
   api.patchUserInfo(name, about)
     .then((data) => {
-      if (!data) {
-        return Promise.reject(`Ошибка получения данных`);
-      } else {
         userInfo.setUserInfo(data.name, data.about);
         changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранено', false)
-      }
+        popupEditProfile.close();
     })
 
     .catch((err) => {
@@ -166,10 +157,7 @@ const handleFormSubmitEditProfile = (event, valuesForm) => {
     })
 
     .finally(() => {
-      setTimeout(() => {
         changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранить')
-        popupEditProfile.close();
-      }, 800);
     });
 };
 
@@ -188,16 +176,13 @@ const handleFormSubmitAddCard = (event, valuesForm) => {
 
   api.addCard(place, url)
     .then((data) => {
-      if (!data) {
-        return Promise.reject(`Ошибка получения данных`);
-      } else {
         const cardElement = createdCard({
           ...data,
           likes: []
         });
         baseCards.addItem(cardElement);
         changeStatusButtonSubmit(cardSubmitButton, 'Создано', false)
-      }
+        popupAddCard.close();
     })
 
     .catch((err) => {
@@ -206,11 +191,8 @@ const handleFormSubmitAddCard = (event, valuesForm) => {
     })
 
     .finally(() => {
-      setTimeout(() => {
         changeStatusButtonSubmit(cardSubmitButton, 'Cоздать')
-        popupAddCard.close();
         validationFormAddCard.setButtonDisable() // отключение кнопки
-      }, 800);
     });
 };
 
@@ -229,22 +211,18 @@ const handleFormSubmitChangeAvatar = (event, valueForm) => {
 
   api.changeAvatar(valueForm.avatar)
     .then((data) => {
-      if (!data) {
-        return Promise.reject(`Ошибка получения данных`);
-      } else {
         userInfo.setAvatar(data.avatar);
         changeStatusButtonSubmit(avatarSubmitButton, 'Сохранено', false)
-      }
+        popupChangeAvatar.close();
     })
+
     .catch((err) => {
       changeStatusButtonSubmit(avatarSubmitButton, 'Ошибка', false)
       console.log(err);
     })
+
     .finally(() => {
-      setTimeout(() => {
         changeStatusButtonSubmit(avatarSubmitButton, 'Сохранить')
-        popupChangeAvatar.close();
-      }, 800);
     });
 }
 

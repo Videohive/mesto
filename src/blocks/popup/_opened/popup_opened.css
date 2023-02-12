@@ -2,5 +2,5 @@
   cursor: pointer;
   opacity: 1;
   visibility: visible;
-  transition: visibility 0s, opacity .5s ease-out;
+  transition: visibility 0s, opacity .5s ease-in-out;
 }

@@ -11,5 +11,6 @@
   position: fixed;
   z-index: 1;
   opacity: 0;
+  transition: 0.5s;
   visibility: hidden;
 }
