@@ -63,4 +63,15 @@ export class Api {
       headers: this._headers,
     }).then(this._getResponseData)
   }
+
+  // замена аватара
+  changeAvatar = (avatar) => {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar,
+      }),
+    }).then(this._getResponseData)
+  }
 }

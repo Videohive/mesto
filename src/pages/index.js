@@ -16,6 +16,8 @@ import {Api} from '../components/Api.js';
 // импорт переменных
 
 import {
+  avatarChangeButton,
+  avatarSubmitButton,
   profileName,
   profileAbout,
   cardsSelector, // селектор секции добавления карточек
@@ -28,6 +30,8 @@ import {
   profileOpenButton,
   profileEditSubmitButton, // кнопка отправки формы редактирования профиля
   selectorEditProfile,
+  selectorEditProfileAvatar,
+  selectorProfileAvatar,
   selectorProfileName,
   selectorProfileAbout,
   selectorPopupImage,
@@ -36,9 +40,11 @@ import {
 
 const validationFormEditProfile = new FormValidator(selectorsCollection, '.popup__form-edit-profile');
 const validationFormAddCard = new FormValidator(selectorsCollection, '.popup__form-add-card');
+const validationFormChangeAvatar = new FormValidator(selectorsCollection, '.popup__form-avatar');
 
 validationFormEditProfile.enableValidation();
 validationFormAddCard.enableValidation();
+validationFormChangeAvatar.enableValidation();
 
 const changeStatusButtonSubmit = (button, text = 'Сохранить', status = true) => {
   button.textContent = text;
@@ -138,7 +144,7 @@ const openEditProfilePopup = () => { // открытие попапа редак
 
 const handleFormSubmitEditProfile = (event, valuesForm) => {
   event.preventDefault();
-  changeStatusButtonSubmit(profileEditSubmitButton, 'Сохраняю...', false)
+  changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранение...', false)
   const {
     name,
     about
@@ -214,12 +220,43 @@ const popupAddCard = new PopupWithForm( // попап добавления ка�
 );
 
 const popupDeleteCard = new PopupWithDelete( // попап удаления карточки
-  selectorDeleteCard,
+  selectorDeleteCard
+);
+
+const handleFormSubmitChangeAvatar = (event, valueForm) => {
+  event.preventDefault();
+  changeStatusButtonSubmit(avatarSubmitButton, 'Cохранение...', false)
+
+  api.changeAvatar(valueForm.url)
+    .then((data) => {
+      if (!data) {
+        return Promise.reject(`Ошибка получения данных`);
+      } else {
+        userInfo.setAvatar(data.avatar);
+        changeStatusButtonSubmit(avatarSubmitButton, 'Сохранено', false)
+      }
+    })
+    .catch((err) => {
+      changeStatusButtonSubmit(avatarSubmitButton, 'Ошибка', false)
+      console.log(err);
+    })
+    .finally(() => {
+      setTimeout(() => {
+        changeStatusButtonSubmit(avatarSubmitButton, 'Сохранить')
+        popupChangeAvatar.close();
+      }, 800);
+    });
+}
+
+const popupChangeAvatar = new PopupWithForm(
+  selectorEditProfileAvatar,
+  handleFormSubmitChangeAvatar
 );
 
 const userInfo = new UserInfo({
   selectorProfileName,
   selectorProfileAbout,
+  selectorProfileAvatar
 });
 
 // Api
@@ -232,20 +269,27 @@ const api = new Api({
 });
 
 const apiGetUserInfo = api.getUserInfo(); // информация о пользователи
-
 const apiGetInitialCards = api.getInitialCards(); // стартовые карточки
 
 Promise.all([apiGetUserInfo, apiGetInitialCards])
   .then(([userData, cardsData]) => {
     userInfo.setUserInfo(userData.name, userData.about);
     userInfo.id = userData._id;
+    userInfo.setAvatar(userData.avatar);
 
     baseCards.renderItems(cardsData.reverse())
   })
 
+  .catch((error) => {
+    console.error(error);
+  })
 
 profileOpenButton.addEventListener('click', openEditProfilePopup); // слушатель редактирования профиля
 
 cardAddButton.addEventListener('click', function () { // слушатель добавления карточки
   popupAddCard.open();
+});
+
+avatarChangeButton.addEventListener("click", function () { // слушатель замены аватара
+  popupChangeAvatar.open();
 });
