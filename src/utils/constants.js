@@ -23,7 +23,7 @@ export const selectorProfileName = '.profile__name'; // селектор име�
 export const selectorProfileAbout = '.profile__about'; // селектор подписи профиля
 
 export const selectorPopupImage = '.popup-image'; // селектор просмотра картинки
-export const selectorDeleteCard = '.popup__card-delete'; // селектор удаления карточки
+export const selectorDeleteCard = '.popup-card-delete'; // селектор удаления карточки
 
 export const selectorAddCard = '.popup-card';
 export const templateSelector = '.template-card';
