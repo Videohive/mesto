@@ -4,13 +4,14 @@ import './index.css';
 
 // импорт классов
 
-import { Card } from '../components/Card.js';
-import { FormValidator } from '../components/FormValidator.js';
-import { Section } from '../components/Section.js';
-import { PopupWithImage } from '../components/PopupWithImage.js';
-import { PopupWithForm } from '../components/PopupWithForm.js';
-import { UserInfo } from '../components/UserInfo.js';
-import { Api } from "../components/Api.js";
+import {Card} from '../components/Card.js';
+import {FormValidator} from '../components/FormValidator.js';
+import {Section} from '../components/Section.js';
+import {PopupWithImage} from '../components/PopupWithImage.js';
+import {PopupWithForm} from '../components/PopupWithForm.js';
+import {PopupWithDelete} from '../components/PopupWithDelete.js';
+import {UserInfo} from '../components/UserInfo.js';
+import {Api} from '../components/Api.js';
 
 // импорт переменных
 
@@ -19,6 +20,8 @@ import {
   profileAbout,
   cardsSelector, // селектор секции добавления карточек
   cardAddButton,
+  selectorDeleteCard, // селектор удаления карточки
+  cardDeleteButton,
   cardSubmitButton,
   selectorAddCard, // селектор контейнера с формой добавления карточки
   templateSelector,
@@ -41,8 +44,9 @@ const changeStatusButtonSubmit = (button, text = 'Сохранить', status = 
   button.textContent = text;
   button.disabled = !status;
   status
-    ? button.classList.remove('popup__button_disable')
-    : button.classList.add('popup__button_disable');
+    ?
+    button.classList.remove('popup__button_disable') :
+    button.classList.add('popup__button_disable');
 }
 
 const handleCardClick = (link, name) => { // открытие попапа картинки
@@ -53,11 +57,42 @@ const openImagePopup = new PopupWithImage(selectorPopupImage) // попап ка
 
 const createdCard = (data) => { // создание карточки
   const newElement = new Card({
-      ... data,
+      ...data,
       idCurrentUser: userInfo.id,
     },
-    templateSelector,
-    handleCardClick
+    templateSelector, {
+      handleCardClick,
+      handleCardDelete: (cardData) => {
+        popupDeleteCard.open()
+        popupDeleteCard.handleSubmit(() => {
+
+          changeStatusButtonSubmit(cardDeleteButton, 'Удаляю...', false)
+          api.removeCard(cardData._id)
+
+            .then((data) => {
+              if (!data) {
+                return Promise.reject(`Ошибка получения данных`);
+              } else {
+                newElement.remove();
+                changeStatusButtonSubmit(cardDeleteButton, 'Удалено', false)
+              }
+            })
+
+            .catch((err) => {
+              changeStatusButtonSubmit(cardDeleteButton, 'Ошибка', false)
+              console.log(err);
+            })
+
+            .finally(() => {
+              setTimeout(() => {
+                changeStatusButtonSubmit(cardDeleteButton, 'Да', false)
+                popupDeleteCard.close();
+              }, 800);
+            })
+        })
+      }
+    }
+
   );
   return newElement.generateCard();
 };
@@ -77,7 +112,10 @@ const baseCards = new Section({ // вставка карточек на стра
 
 const openEditProfilePopup = () => { // открытие попапа редактирования профиля
 
-  const { name, about } = userInfo.getUserInfo();
+  const {
+    name,
+    about
+  } = userInfo.getUserInfo();
   profileName.value = name;
   profileAbout.value = about;
   popupEditProfile.open();
@@ -86,30 +124,33 @@ const openEditProfilePopup = () => { // открытие попапа редак
 
 const handleFormSubmitEditProfile = (event, valuesForm) => {
   event.preventDefault();
-  changeStatusButtonSubmit(profileEditSubmitButton, 'Сохраненяю...', false)
-  const { name, about } = valuesForm;
+  changeStatusButtonSubmit(profileEditSubmitButton, 'Сохраняю...', false)
+  const {
+    name,
+    about
+  } = valuesForm;
 
   api.patchUserInfo(name, about)
-  .then((data) => {
-    if (!data) {
-      return Promise.reject(`Ошибка получения данных`);
-    } else {
-      userInfo.setUserInfo(data.name, data.about);
-      changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранено', false)
-    }
-  })
+    .then((data) => {
+      if (!data) {
+        return Promise.reject(`Ошибка получения данных`);
+      } else {
+        userInfo.setUserInfo(data.name, data.about);
+        changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранено', false)
+      }
+    })
 
-  .catch((err) => {
-    changeStatusButtonSubmit(profileEditSubmitButton, 'Ошибка запроса', false)
-    console.log(err);
-  })
+    .catch((err) => {
+      changeStatusButtonSubmit(profileEditSubmitButton, 'Ошибка', false)
+      console.log(err);
+    })
 
-  .finally(() => {
-    setTimeout(() => {
-      changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранить')
-      popupEditProfile.close();
-    }, 800);
-  });
+    .finally(() => {
+      setTimeout(() => {
+        changeStatusButtonSubmit(profileEditSubmitButton, 'Сохранить')
+        popupEditProfile.close();
+      }, 800);
+    });
 };
 
 const popupEditProfile = new PopupWithForm( // попап редактирования профиля
@@ -119,37 +160,47 @@ const popupEditProfile = new PopupWithForm( // попап редактирова
 
 const handleFormSubmitAddCard = (event, valuesForm) => {
   event.preventDefault();
-  changeStatusButtonSubmit(cardSubmitButton, 'Добавляю...', false)
-  const { place, url } = valuesForm;
+  changeStatusButtonSubmit(cardSubmitButton, 'Cоздаю...', false)
+  const {
+    place,
+    url
+  } = valuesForm;
 
   api.addCard(place, url)
-  .then((data) => {
-    if (!data) {
-      return Promise.reject(`Ошибка получения данных`);
-    } else {
-      const cardElement = createdCard({ ...data});
-      baseCards.addItem(cardElement);
-      changeStatusButtonSubmit(cardSubmitButton, 'Добавлено', false)
-    }
-  })
+    .then((data) => {
+      if (!data) {
+        return Promise.reject(`Ошибка получения данных`);
+      } else {
+        const cardElement = createdCard({
+          ...data,
+          likes: []
+        });
+        baseCards.addItem(cardElement);
+        changeStatusButtonSubmit(cardSubmitButton, 'Создано', false)
+      }
+    })
 
-  .catch((err) => {
-    changeStatusButtonSubmit(cardSubmitButton, 'Ошибка запроса :(', false)
-    console.log(err);
-  })
+    .catch((err) => {
+      changeStatusButtonSubmit(cardSubmitButton, 'Ошибка', false)
+      console.log(err);
+    })
 
-  .finally(() => {
-    setTimeout(() => {
-      changeStatusButtonSubmit(cardSubmitButton, 'Cоздать')
-      popupAddCard.close();
-      validationFormAddCard.setButtonDisable() // отключение кнопки
-    }, 800);
-  });
+    .finally(() => {
+      setTimeout(() => {
+        changeStatusButtonSubmit(cardSubmitButton, 'Cоздать')
+        popupAddCard.close();
+        validationFormAddCard.setButtonDisable() // отключение кнопки
+      }, 800);
+    });
 };
 
 const popupAddCard = new PopupWithForm( // попап добавления карточки
   selectorAddCard,
   handleFormSubmitAddCard
+);
+
+const popupDeleteCard = new PopupWithDelete( // попап удаления карточки
+  selectorDeleteCard,
 );
 
 const userInfo = new UserInfo({

@@ -7,6 +7,7 @@ export const profileEditSubmitButton = profileForm.elements.save_profile;
 
 export const cardAddButton = document.querySelector('.profile__add'); // кнопка добавления карточки
 export const cardSubmitButton = document.forms.add_card.elements.save_card;
+export const cardDeleteButton = document.forms.delete_card.elements.remove_card;
 
 export const cardsSelector = '.elements' // селектор секции добавления карточек
 
@@ -15,9 +16,10 @@ export const selectorProfileName = '.profile__name'; // селектор име�
 export const selectorProfileAbout = '.profile__about'; // селектор подписи профиля
 
 export const selectorPopupImage = '.popup-image'; // селектор просмотра картинки
+export const selectorDeleteCard = '.popup__card-delete'; // селектор удаления карточки
 
-export const selectorAddCard = ".popup-card";
-export const templateSelector = ".template-card";
+export const selectorAddCard = '.popup-card';
+export const templateSelector = '.template-card';
 
 export const selectorsCollection = {
   inputSelector: '.popup__input',

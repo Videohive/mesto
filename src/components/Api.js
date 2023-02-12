@@ -19,7 +19,7 @@ export class Api {
   //обновление информации о пользователе
   patchUserInfo = (name, about) => {
     return fetch(`${this._baseUrl}/users/me`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         name,
@@ -37,13 +37,30 @@ export class Api {
 
   // добавление новой карточки
   addCard = (name, link) => {
-      return fetch(`${this._baseUrl}/cards`, {
-        method: "POST",
-        headers: this._headers,
-        body: JSON.stringify({
-          name: name,
-          link: link,
-        }),
-      }).then(this._getResponseData)
-    }
+    return fetch(`${this._baseUrl}/cards`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      }),
+    }).then(this._getResponseData)
+  }
+
+  // установка лайка
+  setLike = (id, value) => {
+    value = value ? 'DELETE' : 'PUT';
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: `${value}`,
+      headers: this._headers,
+    }).then(this._getResponseData)
+  }
+
+// удаление карточки
+  removeCard = (id) => {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
+      method: 'DELETE',
+      headers: this._headers,
+    }).then(this._getResponseData)
+  }
 }
