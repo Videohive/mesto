@@ -53,6 +53,20 @@ const handleCardClick = (link, name) => { // открытие попапа ка�
   openImagePopup.open(link, name);
 };
 
+const handleCardLike = (id, isLiked, that) => {
+  api.setLike(id, isLiked)
+    .then((array) => {
+      if (!array) {
+        return Promise.reject(`Ошибка получения данных`);
+      } else {
+        that.setLikes(array.likes)
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
+
 const openImagePopup = new PopupWithImage(selectorPopupImage) // попап картинки
 
 const createdCard = (data) => { // создание карточки
@@ -90,9 +104,9 @@ const createdCard = (data) => { // создание карточки
               }, 800);
             })
         })
-      }
+      },
+      handleCardLike
     }
-
   );
   return newElement.generateCard();
 };

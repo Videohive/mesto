@@ -1,14 +1,17 @@
 export class Card {
-  constructor(data, templateSelector, {handleCardClick, handleCardDelete}) {
+  constructor(data, templateSelector, {handleCardClick, handleCardDelete, handleCardLike}) {
+    console.log(data)
     this._cardData = data
-    this._idOwnerCard = data.owner._id;
-    this._idCurrentUser = data.idCurrentUser;
+    this._idOwnerCard = data.owner._id; // id владельца карточки
+    this._idCurrentUser = data.idCurrentUser; // id текущего пользователя
+    this._id = data._id; // id карточки
     this._name = data.name;
     this._link = data.link;
     this._likes = data.likes; // массив количество лайков карточки
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleCardDelete = handleCardDelete;
+    this._handleCardLike = handleCardLike;
 
     this._element = this._getTemplate();
     this._buttonLike = this._element.querySelector('.element__like-button'); // Refactoring имена свойств класса должны начинаться с имени существительного
@@ -28,8 +31,13 @@ export class Card {
   };
 
   _handleLikeClick() {
-    this._buttonLike.classList.toggle('element__like-button_active');
+    this._handleCardLike(this._id, this._likeCurrentUser(), this);
+    //this._buttonLike.classList.toggle('element__like-button_active');
   };
+
+  _likeCurrentUser() {
+    return this._likes.some((user) => user._id === this._idCurrentUser) // проверка лайка пользователя на карточке
+  }
 
   remove(){
     this._element.remove();
@@ -53,6 +61,12 @@ export class Card {
   setLikes(array){ //установка количества лайков карточки
     this._likes = array;
     this._likeCounter.textContent = this._likes.length;
+
+    if (this._likeCurrentUser()) { // проверка лайка, добавление или удаление класса
+      this._buttonLike.classList.add('element__like-button_active');
+    } else {
+      this._buttonLike.classList.remove('element__like-button_active');
+    }
   };
 
   generateCard() {
