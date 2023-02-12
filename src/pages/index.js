@@ -227,7 +227,7 @@ const handleFormSubmitChangeAvatar = (event, valueForm) => {
   event.preventDefault();
   changeStatusButtonSubmit(avatarSubmitButton, 'Cохранение...', false)
 
-  api.changeAvatar(valueForm.url)
+  api.changeAvatar(valueForm.avatar_url)
     .then((data) => {
       if (!data) {
         return Promise.reject(`Ошибка получения данных`);
